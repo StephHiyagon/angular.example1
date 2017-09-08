@@ -1,14 +1,54 @@
 angular.module('appFirst', [])
+
+.component('componentePadre', {
+
+  controller:
+   class {
+     constructor(){
+       this.onShow;
+
+     }
+
+   },
+
+  template:`{{$ctrl.onShow | json}}
+            <component-nav on-show-hide="$ctrl.onShow"></component-nav>
+            <component-main on-show-hide="$ctrl.onShow"></component-main>`
+})
+
 .component('componentNav', {
+  bindings:{
+    onShowHide:'=',
+
+  },
+
+  controller:
+    class {
+      constructor(){
+        this.onShowHide= false;
+      }
+      getShow(){
+        console.log('hiciste click')
+        this.onShowHide = !this.onShowHide
+        console.log(this.onShowHide)
+      
+      }
+    },
+
   template: `<nav>
               <ul>
-                <li>Principal</li>
-                <li>Secundario</li>
+                <li ng-click="$ctrl.getShow()">Principal</li>
+                <li ng-click="$ctrl.getShow()">Secundario</li>
               </ul>
             </nav>`
 })
 
 .component('componentMain', {
+
+  bindings:{
+    onShowHide:'=',
+  },
+
   controller:
     class {
       constructor(){
@@ -28,40 +68,25 @@ angular.module('appFirst', [])
         // console.log(valor1.target.value)
         console.log(this.timeMoney.$error.required);
         // console.log(valor1.trim());
-
-        // if(valor1 != ''){
-        //   // this.item1 = valor1;
-        //   // this.boton = false;
-        //   console.log(valor1)
-        //   this.count++;
-        // }
-        if(this.timeMoney.$error.required ==undefined){
-          console.log('desbloquea boton')
-          this.boton = false;
-        }else{
-          this.boton = true;
-        }
-
-      //   if(this.count == 4){
-      //     console.log('desbloquea boton')
-      //     this.boton = false;
-      //   }
-      // }
-
-
-        // cambio(item1) {
-        //   console.log(item1);
-        //   if(!item1){
-        //     console.log('primer input no vacío');
-        //   }
-        //   //validar ambos inputs y el select que esta seleccionado
-        }
+          if(this.timeMoney.$error.required ==undefined){
+            console.log('desbloquea boton')
+            this.boton = false;
+          }else{
+            this.boton = true;
+          }
+      }
 
 
 
 
     },
-  template: `<h3>Completar datos!</h3>
+  template: `
+          {{onShowHide | json}}
+            <div class="textCenter" ng-if="!$ctrl.onShowHide">
+              <h1>Primera cara de la aplicación</h1>
+            </div>
+            <div class="textCenter" ng-if="$ctrl.onShowHide">
+              <h3>Completar datos!</h3>
                <hr>
                <form name="$ctrl.timeMoney" nonValidate>
                <p>Ingrese su tiempo</p>
@@ -76,6 +101,7 @@ angular.module('appFirst', [])
                </select>
                <button ng-disabled="$ctrl.boton">Enviar</button>
                </form>
+              </div>
                `
 })
 

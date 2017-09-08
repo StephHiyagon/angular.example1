@@ -7,3 +7,7 @@ ul>li{
   padding:20px;
   cursor:pointer;
 }
+
+.textCenter{
+  text-align: center;
+}
